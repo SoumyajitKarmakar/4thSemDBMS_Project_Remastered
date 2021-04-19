@@ -105,26 +105,38 @@ INSERT INTO login VALUES (999999999, "admin", "Admin"), (111111111, "agentoffice
 -- FOR POPULATING TABLES :
 -- =====================
 
--- TODO: following 4 commands do not work
+-==============================================================================
+-- Property
+-- ============================================================================
+-- THIS WORKS NOW.
+-- ============================================================================
 INSERT INTO Property VALUES (163238051, "apartment", 0, "sale", 4565000, 450, 850, "ready",
-"unfurnished", NULL, "Unidark group", 2, 1, 1, NULL, 1, "313 S.j.road",
+"unfurnished", NULL, "Unidark group", 2, NULL, 1, 84, "313 S.j.road",
 "Delisle Road", "Mumbai","Mumbai City" ," Maharashtra");
 
 INSERT INTO Property VALUES (884911864, "apartment", 0, "rent", 21000, 550, 750, "ready",
-"unfurnished", NULL, "Prime group", 3, 2, 1, NULL, NULL, "Private Road",
+"unfurnished", NULL, "Prime group", 3, NULL, NULL, 56, "Private Road",
 "Ghosh Para", "DumDum","North-24 parganas" ,"West Bengal");
 
 INSERT INTO Property VALUES (616636795 , "apartment", 0, "rent", 12000, 600, 900, "ready",
-"unfurnished", NULL, "Prime group", 2, 1, 1, NULL, 1, "13 J.road",
+"unfurnished", NULL, "Prime group", 2, NULL, 1, 45, "13 J.road",
 "isle Road", "DumDum","North-24 parganas" ,"West Bengal");
 
 INSERT INTO Property VALUES (359368434, "bunglow", 0, "rent", 35000, 750, 1490, "ready",
-"furnished", NULL, "Diamond group", 4, 2, 2, NULL,2, "Olive Street",
+"furnished", NULL, "Diamond group", 4, NULL, 2, 21 ,"Olive Street",
 "Jubilee Hills", "Hyderabad","Hyderabad" ,"Telangana");
+
+-==============================================================================
+-- Builder
+-- ============================================================================
 
 INSERT INTO Builder (name, rating) VALUES ('Unidark group', '8') ; 
 INSERT INTO Builder (name, rating) VALUES ('Prime group', '7');
 INSERT INTO Builder (name, rating) VALUES ('Diamond group', '9');
+
+-==============================================================================
+-- Agent
+-- ============================================================================
 
 INSERT INTO Agent (id, name, rating) VALUES ('433129593', 'Reyansh Chhabra', '7');
 INSERT INTO Agent (id, name, rating) VALUES ('967320855', 'Charu Kant', '8');
@@ -135,5 +147,5 @@ INSERT INTO Agent (id, name, rating) VALUES ('861427340', 'Kalpana Banerjee', '8
 insert into Agent_phone values(433129593, 9876486372);
 insert into Agent_phone values(967320855, 9847254782), (320085632, 9836482649), (479207032, 8739264875), (861427340, 7253609846);
 
--- TODO: this does not work
+-- This works too.
 insert into Agent_property values (433129593, 616636795),(967320855, 359368434),(320085632, 163238051),(479207032, 884911864),(861427340, 884911864);
