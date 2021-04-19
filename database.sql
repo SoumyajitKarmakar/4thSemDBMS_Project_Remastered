@@ -1,4 +1,4 @@
-DROP DATABASE project;
+-- DROP DATABASE project;
 CREATE DATABASE project;
 USE project;
 
@@ -88,7 +88,7 @@ CREATE TABLE Agent_property(
 
 -- FOR LOGIN TABLE :
 -- ================
-CREATE TABLE LOGIN(
+CREATE TABLE Login(
     id numeric NOT NULL, -- Treating id as username
     password varchar(20),
     designation varchar(20)
@@ -96,16 +96,16 @@ CREATE TABLE LOGIN(
 
 -- FOR POPULATING LOGIN TABLES :
 -- ============================
-INSERT INTO login VALUES(320085632, 'darshana', 'agent'), (433129593, 'reyansh', 'agent'), (479207032, 'diksha','agent'),  
+INSERT INTO Login VALUES(320085632, 'darshana', 'agent'), (433129593, 'reyansh', 'agent'), (479207032, 'diksha','agent'),  
 (861427340, 'kalpana','agent'), (967320855, 'charu','agent');
-INSERT INTO login VALUES (999999999, "admin", "Admin"), (111111111, "agentoffice", "AgentOffice");
+INSERT INTO Login VALUES (999999999, "admin", "Admin"), (111111111, "agentoffice", "AgentOffice");
 
 
 
 -- FOR POPULATING TABLES :
 -- =====================
 
--==============================================================================
+-- ==============================================================================
 -- Property
 -- ============================================================================
 -- THIS WORKS NOW.
@@ -126,7 +126,7 @@ INSERT INTO Property VALUES (359368434, "bunglow", 0, "rent", 35000, 750, 1490, 
 "furnished", NULL, "Diamond group", 4, NULL, 2, 21 ,"Olive Street",
 "Jubilee Hills", "Hyderabad","Hyderabad" ,"Telangana");
 
--==============================================================================
+-- ==============================================================================
 -- Builder
 -- ============================================================================
 
@@ -134,7 +134,7 @@ INSERT INTO Builder (name, rating) VALUES ('Unidark group', '8') ;
 INSERT INTO Builder (name, rating) VALUES ('Prime group', '7');
 INSERT INTO Builder (name, rating) VALUES ('Diamond group', '9');
 
--==============================================================================
+-- ==============================================================================
 -- Agent
 -- ============================================================================
 

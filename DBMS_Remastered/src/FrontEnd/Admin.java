@@ -82,7 +82,22 @@ public class Admin extends JFrame {
 		JButton btnNewButton = new JButton("View");
 		btnNewButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				textArea.setVisible(true);
+				textArea.setText(null);
+				if(rdbtnAgent.isSelected()){
+					AdminViewJDBC view = new AdminViewJDBC("Agent", textArea);
+					view.run();
+				}
+				else if(rdbtnBuilder.isSelected()){
+					AdminViewJDBC view = new AdminViewJDBC("Builder", textArea);
+					view.run();
+				}
+				else if(rdbtnNewRadioButton.isSelected()){
+					AdminViewJDBC view = new AdminViewJDBC("Property", textArea);
+					view.run();
+				}
+				else{
+					textArea.append("Please choose a table to display...\n");
+				}
 			}
 		});
 		
