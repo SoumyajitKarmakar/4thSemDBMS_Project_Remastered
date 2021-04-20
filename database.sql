@@ -80,10 +80,8 @@ CREATE TABLE Agent_email(
 
 -- Agent_property table
 CREATE TABLE Agent_property(
-    Agent_id int NOT NULL,
-    FOREIGN KEY(Agent_id) REFERENCES Agent(id),
-    property int,
-    FOREIGN KEY(property) REFERENCES Property(id)
+    Agent_id int NOT NULL REFERENCES Agent(id),
+    property int REFERENCES Property(id)
 );
 
 -- FOR LOGIN TABLE :
