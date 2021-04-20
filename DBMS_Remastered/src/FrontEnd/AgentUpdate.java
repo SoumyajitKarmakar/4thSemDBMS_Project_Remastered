@@ -78,6 +78,14 @@ public class AgentUpdate extends JFrame {
         JButton btnSave = new JButton("Save");
         btnSave.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
+                int sold = 0;
+                if (rdbtnSold.isSelected()) {
+                    sold = 1;
+                }
+                String textCommand = "update Property set sold = " + sold + " where id=" + propertyID.getText();
+                JDBCUpdate command = new JDBCUpdate(textCommand);
+                command.run();
+                System.out.println("Update complete");
             }
         });
 
