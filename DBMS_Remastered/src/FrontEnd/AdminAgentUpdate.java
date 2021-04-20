@@ -29,7 +29,7 @@ public class AdminAgentUpdate extends JFrame {
     private JTextField textField_propertyid;
     private final ButtonGroup buttonGroup = new ButtonGroup();
     private JTextField textField_rating;
-    private JTextField textField;
+    private JTextField textField_name;
 
     /**
      * Launch the application.
@@ -135,42 +135,59 @@ public class AdminAgentUpdate extends JFrame {
 
         JButton btnInsert = new JButton("Insert");
         btnInsert.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                String query = "";
-                JDBCUpdate update;
-                if (!textField_agentid.getText().isEmpty()) {
-                    int agentid = Integer.parseInt(textField_agentid.getText());
-                    if (!textField_rating.getText().isEmpty()) {
-                        int rating = Integer.parseInt(textField_rating.getText());
-                        query = "insert into Agent values (" + agentid + ",null," + rating + ")";
-                        update = new JDBCUpdate(query);
-                        update.run();
-                    }
-                    if (!textField_propertyid.getText().isEmpty()) {
-                        int propertyid = Integer.parseInt(textField_propertyid.getText());
-                        query = "insert into Agent_property values (" + agentid + "," + propertyid + ")";
-                        update = new JDBCUpdate(query);
-                        update.run();
-                    }
-                    if (!textField_phone.getText().isEmpty()) {
-                        long phone = Long.parseLong(textField_phone.getText());
-                        query = "insert into Agent_phone values (" + agentid + "," + phone + ")";
-                        update = new JDBCUpdate(query);
-                        update.run();
-                    }
-                    if (!textField_email.getText().isEmpty()) {
-                        String email = getQuoted(textField_email.getText());
-                        query = "insert into Agent_email values (" + agentid + "," + email + ")";
-                        update = new JDBCUpdate(query);
-                        update.run();
-                    }
-                    textField_agentid.setText(null);
-                    textField_propertyid.setText(null);
-                    textField_phone.setText(null);
-                    textField_email.setText(null);
-                    textField_rating.setText(null);
-                }
-            }
+			public void actionPerformed(ActionEvent e) {
+				String query = "";
+				JDBCUpdate update;
+				if(!textField_agentid.getText().isEmpty()){
+					int agentid = Integer.parseInt(textField_agentid.getText());
+					if(!textField_rating.getText().isEmpty() && !textField_name.getText().isEmpty()){
+						int rating = Integer.parseInt(textField_rating.getText());
+						String name = getQuoted(textField_name.getText());
+						query = "insert into Agent values (" + agentid + "," + name + "," + rating + ")";
+						update = new JDBCUpdate(query);
+						update.run();
+					}
+					if(!textField_propertyid.getText().isEmpty()){
+						int propertyid = Integer.parseInt(textField_propertyid.getText());
+						query = "select * from Agent_property where property = " + propertyid;
+						JDBCView view = new JDBCView(query);
+						String output = view.run();
+						if(output.split("\n").length == 1){
+							query = "insert into Agent_property values (" + agentid + "," + propertyid + ")";
+							update = new JDBCUpdate(query);
+							update.run();
+							// default -> on sale
+							int sold = 0;
+							if(rdbtn_sold.isSelected()){
+								sold = 1;
+							}
+							query = "update Property set sold = " + sold + " where id = " + propertyid;
+							update = new JDBCUpdate(query);
+							update.run();
+						}
+						else{
+							System.out.println("Property already assigned to agent " + output.split("\n")[1].split("\t\t")[0]);
+						}
+					}
+					if(!textField_phone.getText().isEmpty()){
+						long phone = Long.parseLong(textField_phone.getText());
+						query = "insert into Agent_phone values (" + agentid + "," + phone + ")";
+						update = new JDBCUpdate(query);
+						update.run();
+					}
+					if(!textField_email.getText().isEmpty()){
+						String email = getQuoted(textField_email.getText());
+						query = "insert into Agent_email values (" + agentid + "," + email + ")";
+						update = new JDBCUpdate(query);
+						update.run();
+					}
+					textField_agentid.setText(null);
+					textField_propertyid.setText(null);
+					textField_phone.setText(null);
+					textField_email.setText(null);
+					textField_rating.setText(null);
+				}
+			}
         });
 
         JButton btnDelete = new JButton("Delete");
@@ -222,8 +239,8 @@ public class AdminAgentUpdate extends JFrame {
             }
         });
 
-        textField = new JTextField();
-        textField.setColumns(10);
+        textField_name = new JTextField();
+        textField_name.setColumns(10);
 
         GroupLayout gl_contentPane = new GroupLayout(contentPane);
         gl_contentPane
@@ -253,7 +270,7 @@ public class AdminAgentUpdate extends JFrame {
                                                                         .addComponent(textField_agentid,
                                                                                 GroupLayout.PREFERRED_SIZE, 154,
                                                                                 GroupLayout.PREFERRED_SIZE)
-                                                                        .addComponent(textField,
+                                                                        .addComponent(textField_name,
                                                                                 GroupLayout.PREFERRED_SIZE, 154,
                                                                                 GroupLayout.PREFERRED_SIZE)
                                                                         .addGroup(gl_contentPane.createSequentialGroup()
@@ -287,7 +304,7 @@ public class AdminAgentUpdate extends JFrame {
                         .addComponent(textField_agentid, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE,
                                 GroupLayout.PREFERRED_SIZE)
                         .addGap(28)
-                        .addComponent(textField, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE,
+                        .addComponent(textField_name, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE,
                                 GroupLayout.PREFERRED_SIZE)
                         .addGap(41)
                         .addGroup(gl_contentPane
