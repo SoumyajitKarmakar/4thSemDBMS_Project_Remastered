@@ -164,3 +164,5 @@ insert into Agent_phone values(967320855, 9847254782), (320085632, 9836482649), 
 
 -- This works too.
 insert into Agent_property values (433129593, 616636795),(967320855, 359368434),(320085632, 163238051),(479207032, 884911864),(861427340, 884911864);
+
+create index city_index on property(address_city);
