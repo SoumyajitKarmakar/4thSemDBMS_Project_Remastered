@@ -71,6 +71,10 @@ public class AdminAgentUpdate extends JFrame {
 		});
 		
 		JButton btnModify = new JButton("Update Personal Info");
+		btnModify.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+			}
+		});
 		
 		textField = new JTextField();
 		textField.setColumns(10);

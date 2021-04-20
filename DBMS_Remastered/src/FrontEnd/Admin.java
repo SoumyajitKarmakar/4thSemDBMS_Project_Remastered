@@ -1,6 +1,5 @@
 package FrontEnd;
 
-import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.EventQueue;
 import java.awt.Font;
@@ -82,22 +81,25 @@ public class Admin extends JFrame {
 		JButton btnNewButton = new JButton("View");
 		btnNewButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				// no error handling anywhere
 				textArea.setText(null);
+				textArea.setEditable(false);
+				textArea.setVisible(true);
+				String query = "select * from ";
+				String output = "Please choose a table to display...\n";
 				if(rdbtnAgent.isSelected()){
-					AdminViewJDBC view = new AdminViewJDBC("Agent", textArea);
-					view.run();
+					JDBCView view = new JDBCView(query + "Agent");
+					output = view.run();
 				}
 				else if(rdbtnBuilder.isSelected()){
-					AdminViewJDBC view = new AdminViewJDBC("Builder", textArea);
-					view.run();
+					JDBCView view = new JDBCView(query + "Builder");
+					output = view.run();
 				}
 				else if(rdbtnNewRadioButton.isSelected()){
-					AdminViewJDBC view = new AdminViewJDBC("Property", textArea);
-					view.run();
+					JDBCView view = new JDBCView(query + "Property");
+					output = view.run();
 				}
-				else{
-					textArea.append("Please choose a table to display...\n");
-				}
+				textArea.setText(output);
 			}
 		});
 		

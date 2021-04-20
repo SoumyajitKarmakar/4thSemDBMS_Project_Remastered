@@ -77,8 +77,6 @@ public class PropertyUpdate extends JFrame {
 		
 		JScrollPane scrollPane = new JScrollPane();
 		
-		JButton btnNewButton = new JButton("Add");
-		
 		JLabel lblAddProperty = new JLabel("Add Property");
 		lblAddProperty.setHorizontalAlignment(SwingConstants.CENTER);
 		lblAddProperty.setFont(new Font("Tahoma", Font.BOLD, 24));
@@ -91,6 +89,14 @@ public class PropertyUpdate extends JFrame {
 				admin.setVisible(true);
 			}
 		});
+
+		JButton btnNewButton = new JButton("Add");
+		btnNewButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+
+			}
+		});
+
 		GroupLayout gl_contentPane = new GroupLayout(contentPane);
 		gl_contentPane.setHorizontalGroup(
 			gl_contentPane.createParallelGroup(Alignment.LEADING)
