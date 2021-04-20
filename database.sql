@@ -1,4 +1,4 @@
--- DROP DATABASE project;
+DROP DATABASE project;
 CREATE DATABASE project;
 USE project;
 
@@ -106,6 +106,15 @@ INSERT INTO Login VALUES (999999999, "admin", "Admin"), (111111111, "agentoffice
 -- =====================
 
 -- ==============================================================================
+-- Builder
+-- ============================================================================
+
+INSERT INTO Builder (name, rating) VALUES ('Unidark group', '8') ; 
+INSERT INTO Builder (name, rating) VALUES ('Prime group', '7');
+INSERT INTO Builder (name, rating) VALUES ('Diamond group', '9');
+
+
+-- ==============================================================================
 -- Property
 -- ============================================================================
 -- THIS WORKS NOW.
@@ -125,14 +134,6 @@ INSERT INTO Property VALUES (616636795 , "apartment", 0, "rent", 12000, 600, 900
 INSERT INTO Property VALUES (359368434, "bunglow", 0, "rent", 35000, 750, 1490, "ready",
 "furnished", NULL, "Diamond group", 4, NULL, 2, 21 ,"Olive Street",
 "Jubilee Hills", "Hyderabad","Hyderabad" ,"Telangana");
-
--- ==============================================================================
--- Builder
--- ============================================================================
-
-INSERT INTO Builder (name, rating) VALUES ('Unidark group', '8') ; 
-INSERT INTO Builder (name, rating) VALUES ('Prime group', '7');
-INSERT INTO Builder (name, rating) VALUES ('Diamond group', '9');
 
 -- ==============================================================================
 -- Agent
