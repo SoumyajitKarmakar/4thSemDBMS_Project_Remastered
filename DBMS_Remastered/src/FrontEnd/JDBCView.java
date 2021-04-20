@@ -29,7 +29,6 @@ class JDBCView {
     }
 
     String run(){
-        // can also pass string here?
         try {
             conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/" + database + "?user=" + username + "&password=" + password + "&useSSL=false&allowPublicKeyRetrieval=true");
         }
