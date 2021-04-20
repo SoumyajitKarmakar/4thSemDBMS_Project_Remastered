@@ -17,11 +17,14 @@ import javax.swing.SwingConstants;
 import javax.swing.GroupLayout.Alignment;
 import javax.swing.border.EmptyBorder;
 import javax.swing.JTextArea;
+import javax.swing.JRadioButton;
+import javax.swing.ButtonGroup;
 
 public class AgOffView extends JFrame {
 
     private JPanel contentPane;
     private JTextField textField;
+    private final ButtonGroup buttonGroup = new ButtonGroup();
 
     /**
      * Launch the application.
@@ -85,38 +88,65 @@ public class AgOffView extends JFrame {
                 AO.setVisible(true);
             }
         });
+        
+        JRadioButton rdbtnNewRadioButton = new JRadioButton("Sales Records");
+        rdbtnNewRadioButton.setOpaque(false);
+        buttonGroup.add(rdbtnNewRadioButton);
+        
+        JRadioButton rdbtnNewRadioButton_1 = new JRadioButton("Rents Records");
+        rdbtnNewRadioButton_1.setOpaque(false);
+        buttonGroup.add(rdbtnNewRadioButton_1);
 
         GroupLayout gl_contentPane = new GroupLayout(contentPane);
-        gl_contentPane.setHorizontalGroup(gl_contentPane.createParallelGroup(Alignment.LEADING).addGroup(gl_contentPane
-                .createSequentialGroup()
-                .addComponent(panel, GroupLayout.PREFERRED_SIZE, 248, GroupLayout.PREFERRED_SIZE)
-                .addGroup(gl_contentPane.createParallelGroup(Alignment.LEADING)
-                        .addGroup(gl_contentPane.createSequentialGroup().addGap(76)
-                                .addComponent(lblNewLabel, GroupLayout.DEFAULT_SIZE, 287, Short.MAX_VALUE).addGap(270))
-                        .addGroup(
-                                gl_contentPane.createSequentialGroup().addGap(59)
-                                        .addComponent(textField, GroupLayout.PREFERRED_SIZE, 154,
-                                                GroupLayout.PREFERRED_SIZE)
-                                        .addGap(420))
-                        .addGroup(gl_contentPane.createSequentialGroup().addGap(91)
-                                .addComponent(btnSubmit, GroupLayout.PREFERRED_SIZE, 73, GroupLayout.PREFERRED_SIZE)
-                                .addGap(117)
-                                .addComponent(btnBack, GroupLayout.PREFERRED_SIZE, 73, GroupLayout.PREFERRED_SIZE)
-                                .addGap(279))
-                        .addGroup(gl_contentPane.createSequentialGroup().addGap(20).addComponent(scrollPane)
-                                .addGap(20)))));
-        gl_contentPane.setVerticalGroup(gl_contentPane.createParallelGroup(Alignment.LEADING)
-                .addGroup(gl_contentPane.createSequentialGroup().addGap(24)
-                        .addComponent(lblNewLabel, GroupLayout.PREFERRED_SIZE, 60, GroupLayout.PREFERRED_SIZE)
-                        .addGap(68)
-                        .addComponent(textField, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE,
-                                GroupLayout.PREFERRED_SIZE)
-                        .addGap(59).addComponent(scrollPane, GroupLayout.DEFAULT_SIZE, 212, Short.MAX_VALUE).addGap(18)
-                        .addGroup(gl_contentPane.createParallelGroup(Alignment.BASELINE).addComponent(btnSubmit)
-                                .addComponent(btnBack))
-                        .addGap(55))
-                .addGroup(gl_contentPane.createSequentialGroup()
-                        .addComponent(panel, GroupLayout.DEFAULT_SIZE, 543, Short.MAX_VALUE).addGap(0)));
+        gl_contentPane.setHorizontalGroup(
+        	gl_contentPane.createParallelGroup(Alignment.LEADING)
+        		.addGroup(gl_contentPane.createSequentialGroup()
+        			.addComponent(panel, GroupLayout.PREFERRED_SIZE, 248, GroupLayout.PREFERRED_SIZE)
+        			.addGroup(gl_contentPane.createParallelGroup(Alignment.LEADING)
+        				.addGroup(gl_contentPane.createSequentialGroup()
+        					.addGap(76)
+        					.addComponent(lblNewLabel, GroupLayout.DEFAULT_SIZE, 287, Short.MAX_VALUE)
+        					.addGap(270))
+        				.addGroup(gl_contentPane.createSequentialGroup()
+        					.addGap(59)
+        					.addComponent(textField, GroupLayout.PREFERRED_SIZE, 154, GroupLayout.PREFERRED_SIZE)
+        					.addGap(85)
+        					.addComponent(rdbtnNewRadioButton)
+        					.addGap(18)
+        					.addComponent(rdbtnNewRadioButton_1)
+        					.addGap(54))
+        				.addGroup(gl_contentPane.createSequentialGroup()
+        					.addGap(91)
+        					.addComponent(btnSubmit, GroupLayout.PREFERRED_SIZE, 73, GroupLayout.PREFERRED_SIZE)
+        					.addGap(117)
+        					.addComponent(btnBack, GroupLayout.PREFERRED_SIZE, 73, GroupLayout.PREFERRED_SIZE)
+        					.addGap(279))
+        				.addGroup(gl_contentPane.createSequentialGroup()
+        					.addGap(20)
+        					.addComponent(scrollPane, GroupLayout.DEFAULT_SIZE, 602, Short.MAX_VALUE)
+        					.addGap(11))))
+        );
+        gl_contentPane.setVerticalGroup(
+        	gl_contentPane.createParallelGroup(Alignment.LEADING)
+        		.addGroup(gl_contentPane.createSequentialGroup()
+        			.addGap(24)
+        			.addComponent(lblNewLabel, GroupLayout.PREFERRED_SIZE, 60, GroupLayout.PREFERRED_SIZE)
+        			.addGap(68)
+        			.addGroup(gl_contentPane.createParallelGroup(Alignment.BASELINE)
+        				.addComponent(textField, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+        				.addComponent(rdbtnNewRadioButton)
+        				.addComponent(rdbtnNewRadioButton_1))
+        			.addGap(59)
+        			.addComponent(scrollPane, GroupLayout.DEFAULT_SIZE, 209, Short.MAX_VALUE)
+        			.addGap(18)
+        			.addGroup(gl_contentPane.createParallelGroup(Alignment.BASELINE)
+        				.addComponent(btnSubmit)
+        				.addComponent(btnBack))
+        			.addGap(55))
+        		.addGroup(gl_contentPane.createSequentialGroup()
+        			.addComponent(panel, GroupLayout.DEFAULT_SIZE, 543, Short.MAX_VALUE)
+        			.addGap(0))
+        );
 
         JPanel panel_1 = new JPanel();
         scrollPane.setViewportView(panel_1);
@@ -143,5 +173,4 @@ public class AgOffView extends JFrame {
         panel.setLayout(gl_panel);
         contentPane.setLayout(gl_contentPane);
     }
-
 }
