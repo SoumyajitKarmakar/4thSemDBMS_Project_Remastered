@@ -135,6 +135,22 @@ INSERT INTO Property VALUES (359368434, "bunglow", 0, "rent", 35000, 750, 1490, 
 "furnished", NULL, "Diamond group", 4, NULL, 2, 21 ,"Olive Street",
 "Jubilee Hills", "Hyderabad","Hyderabad" ,"Telangana");
 
+INSERT INTO Property VALUES (165428051, "apartment", 1, "sale", 5565000, 450, 850, "ready",
+"furnished", '2018-07-18', "Unidark group", 2, '2018-05-07', 1, 88, "S.G.road",
+"Magnolia Road", "Mumbai","Mumbai City" ," Maharashtra");
+
+INSERT INTO Property VALUES (844441864, "apartment", 1, "rent", 24600, 560, 750, "ready",
+"unfurnished", '2019-02-18', "Prime group", 3, '2019-01-01', 1, 98, "MN Road",
+"Satgachi", "DumDum","North-24 parganas" ,"West Bengal");
+
+INSERT INTO Property VALUES (116676795 , "apartment", 1, "rent", 12000, 600, 900, "ready",
+"unfurnished", '2019-05-22', "Unidark group", 2, '2019-02-25', 1, 145, "J.D.road",
+"Imaginary Road", "Mumbai","Mumbai City" ," Maharashtra");
+
+INSERT INTO Property VALUES (359968434, "bunglow", 0, "rent", 56000, 1750, 2000, "ready",
+"furnished", NULL, "Diamond group", 4, NULL, 2, 21 ,"Olive Street",
+"Jubilee Hills", "Hyderabad","Hyderabad" ,"Telangana");
+
 -- ==============================================================================
 -- Agent
 -- ============================================================================
