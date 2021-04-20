@@ -22,8 +22,8 @@ class JDBCView {
     JDBCView(String viewQuery){
         query = viewQuery;
         // your details here
-        username = "Yatn";
-        password = "Yb@160301";
+        username = "root";
+        password = "mysql";
         database = "project";
         conn = null;
     }
