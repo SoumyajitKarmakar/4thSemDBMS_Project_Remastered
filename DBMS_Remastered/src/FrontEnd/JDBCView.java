@@ -1,4 +1,5 @@
 package FrontEnd;
+
 import javax.swing.*;
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -19,45 +20,44 @@ class JDBCView {
     private final String database;
     private Connection conn;
 
-    JDBCView(String viewQuery){
+    JDBCView(String viewQuery) {
         query = viewQuery;
         // your details here
-        username = "root";
-        password = "mysql";
-        database = "project";
+        username = "";
+        password = "";
+        database = "";
         conn = null;
     }
 
-    String run(){
+    String run() {
         try {
-            conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/" + database + "?user=" + username + "&password=" + password + "&useSSL=false&allowPublicKeyRetrieval=true");
-        }
-        catch(SQLException e){
+            conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/" + database + "?user=" + username
+                    + "&password=" + password + "&useSSL=false&allowPublicKeyRetrieval=true");
+        } catch (SQLException e) {
             System.out.println("Failed to make connection to database...\n");
             e.printStackTrace();
             return null;
         }
 
         String output = "";
-        try(Statement stmt = conn.createStatement()){
+        try (Statement stmt = conn.createStatement()) {
             ResultSet rs = stmt.executeQuery(query);
             ResultSetMetaData rsmt = rs.getMetaData();
             int cols = rsmt.getColumnCount();
             String outputRow = "";
-            for(int i = 1; i <= cols; ++i){
+            for (int i = 1; i <= cols; ++i) {
                 outputRow = outputRow + rsmt.getColumnName(i) + "\t\t";
             }
             output += outputRow + "\n";
 
-            while(rs.next()) {
+            while (rs.next()) {
                 outputRow = "";
                 for (int i = 1; i <= cols; ++i) {
                     outputRow = outputRow + rs.getString(i) + "\t\t";
                 }
                 output += outputRow + "\n";
             }
-        }
-        catch(SQLException e){
+        } catch (SQLException e) {
             e.printStackTrace();
         }
 

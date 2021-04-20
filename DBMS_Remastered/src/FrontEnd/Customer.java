@@ -24,276 +24,241 @@ import javax.swing.ButtonGroup;
 
 public class Customer extends JFrame {
 
-	private JPanel contentPane;
-	private JTextField textField;
-	private JTextField textField_1;
-	private JTextField textField_2;
-	private JTextField textField_3;
-	private JTextField textField_4;
-	private final ButtonGroup buttonGroup = new ButtonGroup();
+    private JPanel contentPane;
+    private JTextField textField;
+    private JTextField textField_1;
+    private JTextField textField_2;
+    private JTextField textField_3;
+    private JTextField textField_4;
+    private final ButtonGroup buttonGroup = new ButtonGroup();
 
+    /**
+     * Launch the application.
+     */
+    public static void main(String[] args) {
+        EventQueue.invokeLater(new Runnable() {
+            public void run() {
+                try {
+                    Customer frame = new Customer();
+                    frame.setVisible(true);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+    }
 
-	/**
-	 * Launch the application.
-	 */
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					Customer frame = new Customer();
-					frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
+    /**
+     * Create the frame.
+     */
+    public Customer() {
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setBounds(100, 100, 900, 600);
+        contentPane = new JPanel();
+        contentPane.setBackground(new Color(204, 255, 255));
+        contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
+        setContentPane(contentPane);
 
-	/**
-	 * Create the frame.
-	 */
-	public Customer() {
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 900, 600);
-		contentPane = new JPanel();
-		contentPane.setBackground(new Color(204, 255, 255));
-		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
-		setContentPane(contentPane);
+        JPanel panel = new JPanel();
+        panel.setBackground(new Color(51, 153, 255));
 
-		JPanel panel = new JPanel();
-		panel.setBackground(new Color(51, 153, 255));
+        JLabel lblNewLabel = new JLabel("Customer");
+        lblNewLabel.setFont(new Font("Tahoma", Font.BOLD, 24));
+        lblNewLabel.setHorizontalAlignment(SwingConstants.CENTER);
 
-		JLabel lblNewLabel = new JLabel("Customer");
-		lblNewLabel.setFont(new Font("Tahoma", Font.BOLD, 24));
-		lblNewLabel.setHorizontalAlignment(SwingConstants.CENTER);
+        JTextArea textArea = new JTextArea();
+        textArea.setEditable(false);
+        textArea.setVisible(false);
 
-		JTextArea textArea = new JTextArea();
-		textArea.setEditable(false);
-		textArea.setVisible(false);
+        JButton btnNewButton = new JButton("Submit");
 
-		JButton btnNewButton = new JButton("Submit");
+        textField = new JTextField();
+        textField.setColumns(10);
 
+        JScrollPane scrollPane = new JScrollPane();
 
-		textField = new JTextField();
-		textField.setColumns(10);
+        textField_1 = new JTextField();
+        textField_1.setColumns(10);
 
-		JScrollPane scrollPane = new JScrollPane();
+        textField_2 = new JTextField();
+        textField_2.setColumns(10);
 
-		textField_1 = new JTextField();
-		textField_1.setColumns(10);
+        textField_3 = new JTextField();
+        textField_3.setColumns(10);
 
-		textField_2 = new JTextField();
-		textField_2.setColumns(10);
+        JLabel lblNewLabel_2 = new JLabel("to");
 
-		textField_3 = new JTextField();
-		textField_3.setColumns(10);
+        textField_4 = new JTextField();
+        textField_4.setColumns(10);
 
-		JLabel lblNewLabel_2 = new JLabel("to");
+        JRadioButton rdbtnNewRadioButton = new JRadioButton("Sale");
+        rdbtnNewRadioButton.setOpaque(false);
+        buttonGroup.add(rdbtnNewRadioButton);
 
-		textField_4 = new JTextField();
-		textField_4.setColumns(10);
+        JRadioButton rdbtnNewRadioButton_1 = new JRadioButton("Rent");
+        rdbtnNewRadioButton_1.setOpaque(false);
+        buttonGroup.add(rdbtnNewRadioButton_1);
 
-		JRadioButton rdbtnNewRadioButton = new JRadioButton("Sale");
-		rdbtnNewRadioButton.setOpaque(false);
-		buttonGroup.add(rdbtnNewRadioButton);
+        JButton btnNewButton_1 = new JButton("Back");
+        btnNewButton_1.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                Welcome welcome = new Welcome();
+                dispose();
+                welcome.setVisible(true);
+            }
+        });
 
-		JRadioButton rdbtnNewRadioButton_1 = new JRadioButton("Rent");
-		rdbtnNewRadioButton_1.setOpaque(false);
-		buttonGroup.add(rdbtnNewRadioButton_1);
+        btnNewButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                textArea.setText(null);
+                textArea.setEditable(false);
+                textArea.setVisible(true);
+                String output = "Please choose a property Type to display...\n";
+                String query = "";
 
-		JButton btnNewButton_1 = new JButton("Back");
-		btnNewButton_1.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				Welcome welcome = new Welcome();
-				dispose();
-				welcome.setVisible(true);
-			}
-		});
+                if (textField.getText().isEmpty() || textField_2.getText().isEmpty()) {
+                    output = "Please enter the mandatory field with *\n";
+                }
+                if (textField_3.getText().isEmpty() != textField_4.getText().isEmpty()) {
+                    output = "Please enter both the budget range if you wish to filter with budget *\n";
+                }
 
-		btnNewButton.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				textArea.setText(null);
-				textArea.setEditable(false);
-				textArea.setVisible(true);
-				String output = "Please choose a property Type to display...\n";
-				String query = "";
+                else if (rdbtnNewRadioButton.isSelected()) {
+                    query = "select * from Property where sale_rent = 'sale' and address_city = '" + textField.getText()
+                            + "' and bhk >= " + Integer.parseInt(textField_2.getText());
+                    if (!(textField_3.getText().isEmpty() && textField_4.getText().isEmpty())) {
+                        query += " and price between " + Integer.parseInt(textField_3.getText()) + " and "
+                                + Integer.parseInt(textField_4.getText());
+                    }
+                    if (!textField_1.getText().isEmpty()) {
+                        query += " and address_area = '" + textField_1.getText() + "'";
+                    }
+                    JDBCView view = new JDBCView(query);
+                    output = view.run();
+                } else if (rdbtnNewRadioButton_1.isSelected()) {
+                    query = "select * from Property where sale_rent = 'rent' and address_city = '" + textField.getText()
+                            + "' and bhk >= " + Integer.parseInt(textField_2.getText());
+                    if (!(textField_3.getText().isEmpty() && textField_4.getText().isEmpty())) {
+                        query += " and price between " + Integer.parseInt(textField_3.getText()) + " and "
+                                + Integer.parseInt(textField_4.getText());
+                    }
+                    if (!textField_1.getText().isEmpty()) {
+                        query += " and address_area = '" + textField_1.getText() + "'";
+                    }
+                    JDBCView view = new JDBCView(query);
+                    output = view.run();
+                }
+                textArea.setText(output);
+            }
+        });
 
-				if(textField.getText().isEmpty() || textField_2.getText().isEmpty())
-				{
-					output = "Please enter the mandatory field with *\n";
-				}
-				if(textField_3.getText().isEmpty() != textField_4.getText().isEmpty())
-				{
-					output = "Please enter both the budget range if you wish to filter with budget *\n";
-				}
+        GroupLayout gl_contentPane = new GroupLayout(contentPane);
+        gl_contentPane.setHorizontalGroup(gl_contentPane.createParallelGroup(Alignment.LEADING).addGroup(gl_contentPane
+                .createSequentialGroup()
+                .addComponent(panel, GroupLayout.PREFERRED_SIZE, 248, GroupLayout.PREFERRED_SIZE)
+                .addGroup(gl_contentPane.createParallelGroup(Alignment.LEADING).addGroup(gl_contentPane
+                        .createParallelGroup(Alignment.LEADING)
+                        .addGroup(gl_contentPane.createSequentialGroup().addGap(76)
+                                .addComponent(lblNewLabel, GroupLayout.DEFAULT_SIZE, 278, Short.MAX_VALUE).addGap(270))
+                        .addGroup(gl_contentPane.createSequentialGroup().addGap(109)
+                                .addComponent(btnNewButton, GroupLayout.PREFERRED_SIZE, 73, GroupLayout.PREFERRED_SIZE)
+                                .addGap(60)
+                                .addComponent(btnNewButton_1, GroupLayout.PREFERRED_SIZE, 69,
+                                        GroupLayout.PREFERRED_SIZE)
+                                .addContainerGap())
+                        .addGroup(
+                                gl_contentPane.createSequentialGroup().addGap(18).addComponent(scrollPane).addGap(13)))
+                        .addGroup(gl_contentPane.createSequentialGroup().addGap(50).addGroup(gl_contentPane
+                                .createParallelGroup(Alignment.TRAILING)
+                                .addComponent(textField_1, GroupLayout.PREFERRED_SIZE, 154, GroupLayout.PREFERRED_SIZE)
+                                .addComponent(textField, GroupLayout.PREFERRED_SIZE, 154, GroupLayout.PREFERRED_SIZE)
+                                .addComponent(textField_2, GroupLayout.PREFERRED_SIZE, 154, GroupLayout.PREFERRED_SIZE)
+                                .addComponent(textField_3, GroupLayout.PREFERRED_SIZE, 154, GroupLayout.PREFERRED_SIZE))
+                                .addGap(49).addComponent(lblNewLabel_2).addGap(63)
+                                .addGroup(gl_contentPane.createParallelGroup(Alignment.LEADING)
+                                        .addComponent(textField_4, GroupLayout.PREFERRED_SIZE, 154,
+                                                GroupLayout.PREFERRED_SIZE)
+                                        .addGroup(
+                                                gl_contentPane.createSequentialGroup().addComponent(rdbtnNewRadioButton)
+                                                        .addGap(18).addComponent(rdbtnNewRadioButton_1)))
+                                .addGap(25)))));
+        gl_contentPane.setVerticalGroup(gl_contentPane.createParallelGroup(Alignment.LEADING)
+                .addGroup(gl_contentPane.createSequentialGroup().addGap(24)
+                        .addComponent(lblNewLabel, GroupLayout.PREFERRED_SIZE, 60, GroupLayout.PREFERRED_SIZE)
+                        .addGroup(gl_contentPane.createParallelGroup(Alignment.LEADING)
+                                .addGroup(gl_contentPane.createSequentialGroup().addGap(27)
+                                        .addComponent(textField, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE,
+                                                GroupLayout.PREFERRED_SIZE)
+                                        .addPreferredGap(ComponentPlacement.UNRELATED)
+                                        .addComponent(textField_1, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE,
+                                                GroupLayout.PREFERRED_SIZE)
+                                        .addPreferredGap(ComponentPlacement.UNRELATED).addComponent(textField_2,
+                                                GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE,
+                                                GroupLayout.PREFERRED_SIZE))
+                                .addGroup(gl_contentPane.createSequentialGroup().addGap(38)
+                                        .addGroup(gl_contentPane.createParallelGroup(Alignment.BASELINE)
+                                                .addComponent(rdbtnNewRadioButton)
+                                                .addComponent(rdbtnNewRadioButton_1))))
+                        .addPreferredGap(ComponentPlacement.UNRELATED)
+                        .addGroup(gl_contentPane.createParallelGroup(Alignment.BASELINE)
+                                .addComponent(textField_3, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE,
+                                        GroupLayout.PREFERRED_SIZE)
+                                .addComponent(lblNewLabel_2).addComponent(textField_4, GroupLayout.PREFERRED_SIZE,
+                                        GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+                        .addGap(48).addComponent(scrollPane, GroupLayout.DEFAULT_SIZE, 212, Short.MAX_VALUE)
+                        .addPreferredGap(ComponentPlacement.RELATED)
+                        .addGroup(gl_contentPane.createParallelGroup(Alignment.BASELINE).addComponent(btnNewButton)
+                                .addComponent(btnNewButton_1))
+                        .addContainerGap())
+                .addGroup(gl_contentPane.createSequentialGroup()
+                        .addComponent(panel, GroupLayout.DEFAULT_SIZE, 543, Short.MAX_VALUE).addGap(0)));
 
-				else if(rdbtnNewRadioButton.isSelected()){
-					query = "select * from Property where sale_rent = 'sale' and address_city = '"+textField.getText()
-							+ "' and bhk >= "+ Integer.parseInt(textField_2.getText());
-					if(!(textField_3.getText().isEmpty() && textField_4.getText().isEmpty()))
-					{
-						query += " and price between "+Integer.parseInt(textField_3.getText())+" and "+
-								Integer.parseInt(textField_4.getText());
-					}
-					if(!textField_1.getText().isEmpty())
-					{
-						query += " and address_area = '"+textField_1.getText()+"'";
-					}
-					JDBCView view = new JDBCView(query);
-					output = view.run();
-				}
-				else if(rdbtnNewRadioButton_1.isSelected()){
-					query = "select * from Property where sale_rent = 'rent' and address_city = '"+textField.getText()
-							+ "' and bhk >= "+ Integer.parseInt(textField_2.getText());
-					if(!(textField_3.getText().isEmpty() && textField_4.getText().isEmpty()))
-					{
-						query += " and price between "+Integer.parseInt(textField_3.getText())+" and "+
-								Integer.parseInt(textField_4.getText());
-					}
-					if(!textField_1.getText().isEmpty())
-					{
-						query += " and address_area = '"+textField_1.getText()+"'";
-					}
-					JDBCView view = new JDBCView(query);
-					output = view.run();
-				}
-				textArea.setText(output);
-			}
-		});
+        JPanel panel_1 = new JPanel();
+        scrollPane.setViewportView(panel_1);
 
+        GroupLayout gl_panel_1 = new GroupLayout(panel_1);
+        gl_panel_1.setHorizontalGroup(gl_panel_1.createParallelGroup(Alignment.TRAILING).addComponent(textArea,
+                Alignment.LEADING, GroupLayout.DEFAULT_SIZE, 591, Short.MAX_VALUE));
+        gl_panel_1.setVerticalGroup(gl_panel_1.createParallelGroup(Alignment.TRAILING).addComponent(textArea,
+                GroupLayout.DEFAULT_SIZE, 210, Short.MAX_VALUE));
+        panel_1.setLayout(gl_panel_1);
 
+        JLabel lblNewLabel_1 = new JLabel("City *");
+        lblNewLabel_1.setHorizontalAlignment(SwingConstants.RIGHT);
+        lblNewLabel_1.setFont(new Font("Tahoma", Font.BOLD, 14));
 
-		GroupLayout gl_contentPane = new GroupLayout(contentPane);
-		gl_contentPane.setHorizontalGroup(
-				gl_contentPane.createParallelGroup(Alignment.LEADING)
-						.addGroup(gl_contentPane.createSequentialGroup()
-								.addComponent(panel, GroupLayout.PREFERRED_SIZE, 248, GroupLayout.PREFERRED_SIZE)
-								.addGroup(gl_contentPane.createParallelGroup(Alignment.LEADING)
-										.addGroup(gl_contentPane.createParallelGroup(Alignment.LEADING)
-												.addGroup(gl_contentPane.createSequentialGroup()
-														.addGap(76)
-														.addComponent(lblNewLabel, GroupLayout.DEFAULT_SIZE, 278, Short.MAX_VALUE)
-														.addGap(270))
-												.addGroup(gl_contentPane.createSequentialGroup()
-														.addGap(109)
-														.addComponent(btnNewButton, GroupLayout.PREFERRED_SIZE, 73, GroupLayout.PREFERRED_SIZE)
-														.addGap(60)
-														.addComponent(btnNewButton_1, GroupLayout.PREFERRED_SIZE, 69, GroupLayout.PREFERRED_SIZE)
-														.addContainerGap())
-												.addGroup(gl_contentPane.createSequentialGroup()
-														.addGap(18)
-														.addComponent(scrollPane)
-														.addGap(13)))
-										.addGroup(gl_contentPane.createSequentialGroup()
-												.addGap(50)
-												.addGroup(gl_contentPane.createParallelGroup(Alignment.TRAILING)
-														.addComponent(textField_1, GroupLayout.PREFERRED_SIZE, 154, GroupLayout.PREFERRED_SIZE)
-														.addComponent(textField, GroupLayout.PREFERRED_SIZE, 154, GroupLayout.PREFERRED_SIZE)
-														.addComponent(textField_2, GroupLayout.PREFERRED_SIZE, 154, GroupLayout.PREFERRED_SIZE)
-														.addComponent(textField_3, GroupLayout.PREFERRED_SIZE, 154, GroupLayout.PREFERRED_SIZE))
-												.addGap(49)
-												.addComponent(lblNewLabel_2)
-												.addGap(63)
-												.addGroup(gl_contentPane.createParallelGroup(Alignment.LEADING)
-														.addComponent(textField_4, GroupLayout.PREFERRED_SIZE, 154, GroupLayout.PREFERRED_SIZE)
-														.addGroup(gl_contentPane.createSequentialGroup()
-																.addComponent(rdbtnNewRadioButton)
-																.addGap(18)
-																.addComponent(rdbtnNewRadioButton_1)))
-												.addGap(25))))
-		);
-		gl_contentPane.setVerticalGroup(
-				gl_contentPane.createParallelGroup(Alignment.LEADING)
-						.addGroup(gl_contentPane.createSequentialGroup()
-								.addGap(24)
-								.addComponent(lblNewLabel, GroupLayout.PREFERRED_SIZE, 60, GroupLayout.PREFERRED_SIZE)
-								.addGroup(gl_contentPane.createParallelGroup(Alignment.LEADING)
-										.addGroup(gl_contentPane.createSequentialGroup()
-												.addGap(27)
-												.addComponent(textField, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-												.addPreferredGap(ComponentPlacement.UNRELATED)
-												.addComponent(textField_1, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-												.addPreferredGap(ComponentPlacement.UNRELATED)
-												.addComponent(textField_2, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
-										.addGroup(gl_contentPane.createSequentialGroup()
-												.addGap(38)
-												.addGroup(gl_contentPane.createParallelGroup(Alignment.BASELINE)
-														.addComponent(rdbtnNewRadioButton)
-														.addComponent(rdbtnNewRadioButton_1))))
-								.addPreferredGap(ComponentPlacement.UNRELATED)
-								.addGroup(gl_contentPane.createParallelGroup(Alignment.BASELINE)
-										.addComponent(textField_3, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-										.addComponent(lblNewLabel_2)
-										.addComponent(textField_4, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
-								.addGap(48)
-								.addComponent(scrollPane, GroupLayout.DEFAULT_SIZE, 212, Short.MAX_VALUE)
-								.addPreferredGap(ComponentPlacement.RELATED)
-								.addGroup(gl_contentPane.createParallelGroup(Alignment.BASELINE)
-										.addComponent(btnNewButton)
-										.addComponent(btnNewButton_1))
-								.addContainerGap())
-						.addGroup(gl_contentPane.createSequentialGroup()
-								.addComponent(panel, GroupLayout.DEFAULT_SIZE, 543, Short.MAX_VALUE)
-								.addGap(0))
-		);
+        JLabel lblNewLabel_1_1 = new JLabel("Locality");
+        lblNewLabel_1_1.setHorizontalAlignment(SwingConstants.RIGHT);
+        lblNewLabel_1_1.setFont(new Font("Tahoma", Font.BOLD, 14));
 
-		JPanel panel_1 = new JPanel();
-		scrollPane.setViewportView(panel_1);
+        JLabel lblNewLabel_1_2 = new JLabel("BHK *");
+        lblNewLabel_1_2.setHorizontalAlignment(SwingConstants.RIGHT);
+        lblNewLabel_1_2.setFont(new Font("Tahoma", Font.BOLD, 14));
 
-
-		GroupLayout gl_panel_1 = new GroupLayout(panel_1);
-		gl_panel_1.setHorizontalGroup(
-				gl_panel_1.createParallelGroup(Alignment.TRAILING)
-						.addComponent(textArea, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, 591, Short.MAX_VALUE)
-		);
-		gl_panel_1.setVerticalGroup(
-				gl_panel_1.createParallelGroup(Alignment.TRAILING)
-						.addComponent(textArea, GroupLayout.DEFAULT_SIZE, 210, Short.MAX_VALUE)
-		);
-		panel_1.setLayout(gl_panel_1);
-
-		JLabel lblNewLabel_1 = new JLabel("City *");
-		lblNewLabel_1.setHorizontalAlignment(SwingConstants.RIGHT);
-		lblNewLabel_1.setFont(new Font("Tahoma", Font.BOLD, 14));
-
-		JLabel lblNewLabel_1_1 = new JLabel("Locality");
-		lblNewLabel_1_1.setHorizontalAlignment(SwingConstants.RIGHT);
-		lblNewLabel_1_1.setFont(new Font("Tahoma", Font.BOLD, 14));
-
-		JLabel lblNewLabel_1_2 = new JLabel("BHK *");
-		lblNewLabel_1_2.setHorizontalAlignment(SwingConstants.RIGHT);
-		lblNewLabel_1_2.setFont(new Font("Tahoma", Font.BOLD, 14));
-
-		JLabel lblNewLabel_1_3 = new JLabel("Budget");
-		lblNewLabel_1_3.setHorizontalAlignment(SwingConstants.RIGHT);
-		lblNewLabel_1_3.setFont(new Font("Tahoma", Font.BOLD, 14));
-		GroupLayout gl_panel = new GroupLayout(panel);
-		gl_panel.setHorizontalGroup(
-				gl_panel.createParallelGroup(Alignment.TRAILING)
-						.addGroup(gl_panel.createSequentialGroup()
-								.addContainerGap(102, Short.MAX_VALUE)
-								.addGroup(gl_panel.createParallelGroup(Alignment.LEADING)
-										.addComponent(lblNewLabel_1_3, GroupLayout.PREFERRED_SIZE, 111, GroupLayout.PREFERRED_SIZE)
-										.addComponent(lblNewLabel_1_2, GroupLayout.PREFERRED_SIZE, 111, GroupLayout.PREFERRED_SIZE)
-										.addComponent(lblNewLabel_1_1, GroupLayout.PREFERRED_SIZE, 111, GroupLayout.PREFERRED_SIZE)
-										.addComponent(lblNewLabel_1, GroupLayout.PREFERRED_SIZE, 111, GroupLayout.PREFERRED_SIZE))
-								.addGap(35))
-		);
-		gl_panel.setVerticalGroup(
-				gl_panel.createParallelGroup(Alignment.LEADING)
-						.addGroup(gl_panel.createSequentialGroup()
-								.addGap(109)
-								.addComponent(lblNewLabel_1, GroupLayout.PREFERRED_SIZE, 27, GroupLayout.PREFERRED_SIZE)
-								.addPreferredGap(ComponentPlacement.RELATED)
-								.addComponent(lblNewLabel_1_1, GroupLayout.PREFERRED_SIZE, 27, GroupLayout.PREFERRED_SIZE)
-								.addPreferredGap(ComponentPlacement.RELATED)
-								.addComponent(lblNewLabel_1_2, GroupLayout.PREFERRED_SIZE, 27, GroupLayout.PREFERRED_SIZE)
-								.addPreferredGap(ComponentPlacement.RELATED)
-								.addComponent(lblNewLabel_1_3, GroupLayout.PREFERRED_SIZE, 27, GroupLayout.PREFERRED_SIZE)
-								.addContainerGap(305, Short.MAX_VALUE))
-		);
-		panel.setLayout(gl_panel);
-		contentPane.setLayout(gl_contentPane);
-	}
+        JLabel lblNewLabel_1_3 = new JLabel("Budget");
+        lblNewLabel_1_3.setHorizontalAlignment(SwingConstants.RIGHT);
+        lblNewLabel_1_3.setFont(new Font("Tahoma", Font.BOLD, 14));
+        GroupLayout gl_panel = new GroupLayout(panel);
+        gl_panel.setHorizontalGroup(gl_panel.createParallelGroup(Alignment.TRAILING).addGroup(gl_panel
+                .createSequentialGroup().addContainerGap(102, Short.MAX_VALUE)
+                .addGroup(gl_panel.createParallelGroup(Alignment.LEADING)
+                        .addComponent(lblNewLabel_1_3, GroupLayout.PREFERRED_SIZE, 111, GroupLayout.PREFERRED_SIZE)
+                        .addComponent(lblNewLabel_1_2, GroupLayout.PREFERRED_SIZE, 111, GroupLayout.PREFERRED_SIZE)
+                        .addComponent(lblNewLabel_1_1, GroupLayout.PREFERRED_SIZE, 111, GroupLayout.PREFERRED_SIZE)
+                        .addComponent(lblNewLabel_1, GroupLayout.PREFERRED_SIZE, 111, GroupLayout.PREFERRED_SIZE))
+                .addGap(35)));
+        gl_panel.setVerticalGroup(gl_panel.createParallelGroup(Alignment.LEADING)
+                .addGroup(gl_panel.createSequentialGroup().addGap(109)
+                        .addComponent(lblNewLabel_1, GroupLayout.PREFERRED_SIZE, 27, GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(ComponentPlacement.RELATED)
+                        .addComponent(lblNewLabel_1_1, GroupLayout.PREFERRED_SIZE, 27, GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(ComponentPlacement.RELATED)
+                        .addComponent(lblNewLabel_1_2, GroupLayout.PREFERRED_SIZE, 27, GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(ComponentPlacement.RELATED)
+                        .addComponent(lblNewLabel_1_3, GroupLayout.PREFERRED_SIZE, 27, GroupLayout.PREFERRED_SIZE)
+                        .addContainerGap(305, Short.MAX_VALUE)));
+        panel.setLayout(gl_panel);
+        contentPane.setLayout(gl_contentPane);
+    }
 
 }

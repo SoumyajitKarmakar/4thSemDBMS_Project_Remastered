@@ -9,7 +9,7 @@ class JDBCUpdate {
     private final String database;
     private Connection conn;
 
-    JDBCUpdate(String updateQuery){
+    JDBCUpdate(String updateQuery) {
         query = updateQuery;
         // your details here
         username = "";
@@ -20,7 +20,8 @@ class JDBCUpdate {
 
     void run() {
         try {
-            conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/" + database + "?user=" + username + "&password=" + password + "&useSSL=false&allowPublicKeyRetrieval=true");
+            conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/" + database + "?user=" + username
+                    + "&password=" + password + "&useSSL=false&allowPublicKeyRetrieval=true");
         } catch (SQLException e) {
             System.out.println("Failed to make connection to database...\n");
             e.printStackTrace();
