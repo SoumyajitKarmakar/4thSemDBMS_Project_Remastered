@@ -21,10 +21,10 @@ import javax.swing.border.EmptyBorder;
 public class BuilderUpdate extends JFrame {
 
 	private JPanel contentPane;
-	private JTextField textField;
-	private JTextField textField_1;
-	private JTextField textField_2;
-	private JTextField textField_3;
+	private JTextField textField_name;
+	private JTextField textField_phone;
+	private JTextField textField_email;
+	private JTextField textField_rating;
 
 	/**
 	 * Launch the application.
@@ -40,6 +40,10 @@ public class BuilderUpdate extends JFrame {
 				}
 			}
 		});
+	}
+
+	String getQuoted(String input){
+		return "'" + input + "'";
 	}
 
 	/**
@@ -60,24 +64,100 @@ public class BuilderUpdate extends JFrame {
 		lblNewLabel.setFont(new Font("Tahoma", Font.BOLD, 24));
 		lblNewLabel.setHorizontalAlignment(SwingConstants.CENTER);
 		
+		textField_name = new JTextField();
+		textField_name.setColumns(10);
 		
-		JButton btnNewButton = new JButton("Insert");
-		btnNewButton.addActionListener(new ActionListener() {
+		textField_phone = new JTextField();
+		textField_phone.setColumns(10);
+		
+		textField_email = new JTextField();
+		textField_email.setColumns(10);
+
+		textField_rating = new JTextField();
+		textField_rating.setColumns(10);
+
+		JButton btnInsert = new JButton("Insert");
+		btnInsert.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				String query = "";
+				JDBCUpdate update;
+				if(!textField_name.getText().isEmpty()){
+					String name = getQuoted(textField_name.getText());
+					if(!textField_rating.getText().isEmpty()){
+						int rating = Integer.parseInt(textField_rating.getText());
+						query = "insert into Builder values (" + name + "," + rating + ")";
+						update = new JDBCUpdate(query);
+						update.run();
+					}
+					if(!textField_phone.getText().isEmpty()){
+						long phone = Long.parseLong(textField_phone.getText());
+						query = "insert into Builder_phone values (" + name + "," + phone + ")";
+						update = new JDBCUpdate(query);
+						update.run();
+					}
+
+					if(!textField_email.getText().isEmpty()){
+						String email = getQuoted(textField_email.getText());
+						query = "insert into Builder_email values (" + name + "," + email + ")";
+						update = new JDBCUpdate(query);
+						update.run();
+					}
+					textField_name.setText(null);
+					textField_phone.setText(null);
+					textField_email.setText(null);
+					textField_rating.setText(null);
+				}
 			}
 		});
-		
+
 		JButton btnModify = new JButton("Delete");
+		btnModify.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				String query = "";
+				JDBCUpdate update;
+				if(!textField_name.getText().isEmpty()){
+					String name = getQuoted(textField_name.getText());
+					if(!textField_phone.getText().isEmpty()){
+						long phone = Long.parseLong(textField_phone.getText());
+						query = "delete from Builder_phone where builder_name = " + name + " and phone = " + phone;
+						update = new JDBCUpdate(query);
+						update.run();
+					}
+					if(!textField_email.getText().isEmpty()){
+						String email = getQuoted(textField_email.getText());
+						query = "delete from Builder_email where builder_name = " + name + " and email = " + email;
+						update = new JDBCUpdate(query);
+						update.run();
+					}
+					if(!textField_rating.getText().isEmpty()){
+						query = "delete from Builder where name = " + name;
+						update = new JDBCUpdate(query);
+						update.run();
+					}
+					textField_name.setText(null);
+					textField_phone.setText(null);
+					textField_email.setText(null);
+					textField_rating.setText(null);
+				}
+			}
+		});
+
 		
-		textField = new JTextField();
-		textField.setColumns(10);
-		
-		textField_1 = new JTextField();
-		textField_1.setColumns(10);
-		
-		textField_2 = new JTextField();
-		textField_2.setColumns(10);
-		
+		JButton btnUpdateRating = new JButton("Update Rating");
+		btnUpdateRating.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				String name = getQuoted(textField_name.getText());
+				int rating = Integer.parseInt(textField_rating.getText());
+				if(rating >= 0 && rating <= 10){
+					String query = "update Builder set rating = " + rating + " where name = " + name;
+					JDBCUpdate update = new JDBCUpdate(query);
+					update.run();
+				}
+				textField_name.setText(null);
+				textField_rating.setText(null);
+			}
+		});
+
 		JButton btnBack = new JButton("Back");
 		btnBack.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -86,11 +166,6 @@ public class BuilderUpdate extends JFrame {
 				admin.setVisible(true);
 			}
 		});
-		
-		textField_3 = new JTextField();
-		textField_3.setColumns(10);
-		
-		JButton btnNewButton_1 = new JButton("Update Rating");
 		
 		GroupLayout gl_contentPane = new GroupLayout(contentPane);
 		gl_contentPane.setHorizontalGroup(
@@ -106,19 +181,19 @@ public class BuilderUpdate extends JFrame {
 								.addGroup(Alignment.LEADING, gl_contentPane.createSequentialGroup()
 									.addGap(59)
 									.addGroup(gl_contentPane.createParallelGroup(Alignment.LEADING)
-										.addComponent(textField, GroupLayout.PREFERRED_SIZE, 154, GroupLayout.PREFERRED_SIZE)
-										.addComponent(textField_2, GroupLayout.PREFERRED_SIZE, 154, GroupLayout.PREFERRED_SIZE)
-										.addComponent(textField_3, GroupLayout.PREFERRED_SIZE, 154, GroupLayout.PREFERRED_SIZE)
-										.addComponent(textField_1, GroupLayout.PREFERRED_SIZE, 154, GroupLayout.PREFERRED_SIZE))))
+										.addComponent(textField_name, GroupLayout.PREFERRED_SIZE, 154, GroupLayout.PREFERRED_SIZE)
+										.addComponent(textField_email, GroupLayout.PREFERRED_SIZE, 154, GroupLayout.PREFERRED_SIZE)
+										.addComponent(textField_rating, GroupLayout.PREFERRED_SIZE, 154, GroupLayout.PREFERRED_SIZE)
+										.addComponent(textField_phone, GroupLayout.PREFERRED_SIZE, 154, GroupLayout.PREFERRED_SIZE))))
 							.addPreferredGap(ComponentPlacement.RELATED)
 							.addGroup(gl_contentPane.createParallelGroup(Alignment.LEADING, false)
 								.addGroup(gl_contentPane.createSequentialGroup()
-									.addComponent(btnNewButton, GroupLayout.PREFERRED_SIZE, 73, GroupLayout.PREFERRED_SIZE)
+									.addComponent(btnInsert, GroupLayout.PREFERRED_SIZE, 73, GroupLayout.PREFERRED_SIZE)
 									.addPreferredGap(ComponentPlacement.RELATED, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
 									.addComponent(btnModify, GroupLayout.PREFERRED_SIZE, 84, GroupLayout.PREFERRED_SIZE)
 									.addGap(68))
 								.addGroup(Alignment.TRAILING, gl_contentPane.createSequentialGroup()
-									.addComponent(btnNewButton_1)
+									.addComponent(btnUpdateRating)
 									.addGap(80))))
 						.addGroup(Alignment.TRAILING, gl_contentPane.createSequentialGroup()
 							.addPreferredGap(ComponentPlacement.RELATED)
@@ -133,20 +208,20 @@ public class BuilderUpdate extends JFrame {
 					.addGroup(gl_contentPane.createParallelGroup(Alignment.LEADING)
 						.addGroup(gl_contentPane.createSequentialGroup()
 							.addGap(68)
-							.addComponent(textField, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+							.addComponent(textField_name, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
 							.addGap(66)
-							.addComponent(textField_1, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+							.addComponent(textField_phone, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
 							.addGap(32)
-							.addComponent(textField_2, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+							.addComponent(textField_email, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
 						.addGroup(gl_contentPane.createSequentialGroup()
 							.addGap(172)
 							.addGroup(gl_contentPane.createParallelGroup(Alignment.BASELINE)
-								.addComponent(btnNewButton)
+								.addComponent(btnInsert)
 								.addComponent(btnModify))))
 					.addGap(67)
 					.addGroup(gl_contentPane.createParallelGroup(Alignment.BASELINE)
-						.addComponent(textField_3, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-						.addComponent(btnNewButton_1))
+						.addComponent(textField_rating, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+						.addComponent(btnUpdateRating))
 					.addPreferredGap(ComponentPlacement.RELATED, 80, Short.MAX_VALUE)
 					.addComponent(btnBack)
 					.addGap(30))

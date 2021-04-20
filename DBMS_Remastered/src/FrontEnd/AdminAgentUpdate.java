@@ -140,6 +140,12 @@ public class AdminAgentUpdate extends JFrame {
 				JDBCUpdate update;
 				if(!textField_agentid.getText().isEmpty()){
 					int agentid = Integer.parseInt(textField_agentid.getText());
+					if(!textField_rating.getText().isEmpty()){
+						int rating = Integer.parseInt(textField_rating.getText());
+						query = "insert into Agent values (" + agentid + ",null," + rating + ")";
+						update = new JDBCUpdate(query);
+						update.run();
+					}
 					if(!textField_propertyid.getText().isEmpty()){
 						int propertyid = Integer.parseInt(textField_propertyid.getText());
 						query = "insert into Agent_property values (" + agentid + "," + propertyid + ")";
@@ -158,15 +164,11 @@ public class AdminAgentUpdate extends JFrame {
 						update = new JDBCUpdate(query);
 						update.run();
 					}
-					if(textField_propertyid.getText().isEmpty() && textField_phone.getText().isEmpty() && textField_email.getText().isEmpty()){
-						query = "insert into Agent values (" + agentid + ",null,0)";
-						update = new JDBCUpdate(query);
-						update.run();
-					}
 					textField_agentid.setText(null);
 					textField_propertyid.setText(null);
 					textField_phone.setText(null);
 					textField_email.setText(null);
+					textField_rating.setText(null);
 				}
 			}
 		});
@@ -196,7 +198,7 @@ public class AdminAgentUpdate extends JFrame {
 						update = new JDBCUpdate(query);
 						update.run();
 					}
-					if(textField_propertyid.getText().isEmpty() && textField_phone.getText().isEmpty() && textField_email.getText().isEmpty()){
+					if(!textField_rating.getText().isEmpty()){
 						query = "delete from Agent where id = " + agentid;
 						update = new JDBCUpdate(query);
 						update.run();
@@ -205,6 +207,7 @@ public class AdminAgentUpdate extends JFrame {
 					textField_propertyid.setText(null);
 					textField_phone.setText(null);
 					textField_email.setText(null);
+					textField_rating.setText(null);
 				}
 			}
 		});
