@@ -22,9 +22,9 @@ class JDBCView {
     JDBCView(String viewQuery){
         query = viewQuery;
         // your details here
-        username = "";
-        password = "";
-        database = "";
+        username = "Yatn";
+        password = "Yb@160301";
+        database = "project";
         conn = null;
     }
 
