@@ -23,12 +23,12 @@ import javax.swing.ButtonGroup;
 public class AdminAgentUpdate extends JFrame {
 
 	private JPanel contentPane;
-	private JTextField textField;
-	private JTextField textField_1;
-	private JTextField textField_2;
-	private JTextField textField_3;
+	private JTextField textField_agentid;
+	private JTextField textField_phone;
+	private JTextField textField_email;
+	private JTextField textField_propertyid;
 	private final ButtonGroup buttonGroup = new ButtonGroup();
-	private JTextField textField_4;
+	private JTextField textField_rating;
 
 	/**
 	 * Launch the application.
@@ -44,6 +44,10 @@ public class AdminAgentUpdate extends JFrame {
 				}
 			}
 		});
+	}
+
+	String getQuoted(String input){
+		return "'" + input + "'";
 	}
 
 	/**
@@ -63,29 +67,148 @@ public class AdminAgentUpdate extends JFrame {
 		JLabel lblNewLabel = new JLabel("Agent Info Master-Contol");
 		lblNewLabel.setFont(new Font("Tahoma", Font.BOLD, 24));
 		lblNewLabel.setHorizontalAlignment(SwingConstants.CENTER);
+		JRadioButton rdbtn_sold = new JRadioButton("Sold");
+		rdbtn_sold.setOpaque(false);
+		buttonGroup.add(rdbtn_sold);
+
+		JRadioButton rdbtn_notsold = new JRadioButton("Up for Sale");
+		rdbtn_notsold.setOpaque(false);
+		buttonGroup.add(rdbtn_notsold);
 		
+		textField_agentid = new JTextField();
+		textField_agentid.setColumns(10);
 		
+		textField_phone = new JTextField();
+		textField_phone.setColumns(10);
+		
+		textField_email = new JTextField();
+		textField_email.setColumns(10);
+		
+		textField_propertyid = new JTextField();
+		textField_propertyid.setColumns(10);
+		
+		textField_rating = new JTextField();
+		textField_rating.setColumns(10);
+
 		JButton btnNewButton = new JButton("Update Property Status");
 		btnNewButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				int agentid = Integer.parseInt(textField_agentid.getText());
+				int propertyid = Integer.parseInt(textField_propertyid.getText());
+				String query = "select * from Agent_property where Agent_id = " + agentid;
+				query += " and property = " + propertyid;
+				JDBCView view = new JDBCView(query);
+				String output = view.run();
+
+				if(!output.isEmpty() && output.split("\n").length > 1){
+					int soldStatus;
+					if(rdbtn_sold.isSelected()){
+						soldStatus = 1;
+					}
+					else{
+						soldStatus = 0;
+					}
+					query = "update Property set sold = " + soldStatus + " where id = " + propertyid;
+					JDBCUpdate update = new JDBCUpdate(query);
+					update.run();
+				}
+
+				textField_agentid.setText(null);
+				textField_propertyid.setText(null);
 			}
 		});
-		
+
 		JButton btnModify = new JButton("Update Rating");
 		btnModify.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				int agentid = Integer.parseInt(textField_agentid.getText());
+				int rating = Integer.parseInt(textField_rating.getText());
+				if(rating >= 0 && rating <= 10){
+					String query = "update Agent set rating = " + rating + " where id = " + agentid;
+					JDBCUpdate update = new JDBCUpdate(query);
+					update.run();
+				}
+				textField_agentid.setText(null);
+				textField_rating.setText(null);
 			}
 		});
 		
-		textField = new JTextField();
-		textField.setColumns(10);
+		JButton btnInsert = new JButton("Insert");
+		btnInsert.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				String query = "";
+				JDBCUpdate update;
+				if(!textField_agentid.getText().isEmpty()){
+					int agentid = Integer.parseInt(textField_agentid.getText());
+					if(!textField_propertyid.getText().isEmpty()){
+						int propertyid = Integer.parseInt(textField_propertyid.getText());
+						query = "insert into Agent_property values (" + agentid + "," + propertyid + ")";
+						update = new JDBCUpdate(query);
+						update.run();
+					}
+					if(!textField_phone.getText().isEmpty()){
+						long phone = Long.parseLong(textField_phone.getText());
+						query = "insert into Agent_phone values (" + agentid + "," + phone + ")";
+						update = new JDBCUpdate(query);
+						update.run();
+					}
+					if(!textField_email.getText().isEmpty()){
+						String email = getQuoted(textField_email.getText());
+						query = "insert into Agent_email values (" + agentid + "," + email + ")";
+						update = new JDBCUpdate(query);
+						update.run();
+					}
+					if(textField_propertyid.getText().isEmpty() && textField_phone.getText().isEmpty() && textField_email.getText().isEmpty()){
+						query = "insert into Agent values (" + agentid + ",null,0)";
+						update = new JDBCUpdate(query);
+						update.run();
+					}
+					textField_agentid.setText(null);
+					textField_propertyid.setText(null);
+					textField_phone.setText(null);
+					textField_email.setText(null);
+				}
+			}
+		});
 		
-		textField_1 = new JTextField();
-		textField_1.setColumns(10);
-		
-		textField_2 = new JTextField();
-		textField_2.setColumns(10);
-		
+		JButton btnDelete = new JButton("Delete");
+		btnDelete.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				String query = "";
+				JDBCUpdate update;
+				if(!textField_agentid.getText().isEmpty()){
+					int agentid = Integer.parseInt(textField_agentid.getText());
+					if(!textField_propertyid.getText().isEmpty()){
+						int propertyid = Integer.parseInt(textField_propertyid.getText());
+						query = "delete from Agent_property where Agent_id = " + agentid + " and property = " + propertyid;
+						update = new JDBCUpdate(query);
+						update.run();
+					}
+					if(!textField_phone.getText().isEmpty()){
+						long phone = Long.parseLong(textField_phone.getText());
+						query = "delete from Agent_phone where Agent_id = " + agentid + " and phone = " + phone;
+						update = new JDBCUpdate(query);
+						update.run();
+					}
+					if(!textField_email.getText().isEmpty()){
+						String email = getQuoted(textField_email.getText());
+						query = "delete from Agent_email where Agent_id = " + agentid + " and email = " + email;
+						update = new JDBCUpdate(query);
+						update.run();
+					}
+					if(textField_propertyid.getText().isEmpty() && textField_phone.getText().isEmpty() && textField_email.getText().isEmpty()){
+						query = "delete from Agent where id = " + agentid;
+						update = new JDBCUpdate(query);
+						update.run();
+					}
+					textField_agentid.setText(null);
+					textField_propertyid.setText(null);
+					textField_phone.setText(null);
+					textField_email.setText(null);
+				}
+			}
+		});
+
 		JButton btnBack = new JButton("Back");
 		btnBack.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -94,24 +217,6 @@ public class AdminAgentUpdate extends JFrame {
 				admin.setVisible(true);
 			}
 		});
-		
-		textField_3 = new JTextField();
-		textField_3.setColumns(10);
-		
-		JRadioButton rdbtnNewRadioButton = new JRadioButton("Sold");
-		rdbtnNewRadioButton.setOpaque(false);
-		buttonGroup.add(rdbtnNewRadioButton);
-		
-		JRadioButton rdbtnNewRadioButton_1 = new JRadioButton("Up for Sale");
-		rdbtnNewRadioButton_1.setOpaque(false);
-		buttonGroup.add(rdbtnNewRadioButton_1);
-		
-		textField_4 = new JTextField();
-		textField_4.setColumns(10);
-		
-		JButton btnNewButton_1 = new JButton("Insert");
-		
-		JButton btnDelete = new JButton("Delete");
 		
 		GroupLayout gl_contentPane = new GroupLayout(contentPane);
 		gl_contentPane.setHorizontalGroup(
@@ -125,22 +230,22 @@ public class AdminAgentUpdate extends JFrame {
 								.addGroup(gl_contentPane.createParallelGroup(Alignment.TRAILING)
 									.addGroup(Alignment.LEADING, gl_contentPane.createSequentialGroup()
 										.addPreferredGap(ComponentPlacement.RELATED)
-										.addComponent(rdbtnNewRadioButton)
+										.addComponent(rdbtn_sold)
 										.addGap(18)
-										.addComponent(rdbtnNewRadioButton_1))
-									.addComponent(textField_2, Alignment.LEADING, GroupLayout.PREFERRED_SIZE, 154, GroupLayout.PREFERRED_SIZE)
-									.addComponent(textField_1, Alignment.LEADING, GroupLayout.PREFERRED_SIZE, 154, GroupLayout.PREFERRED_SIZE)
-									.addComponent(textField, Alignment.LEADING, GroupLayout.PREFERRED_SIZE, 154, GroupLayout.PREFERRED_SIZE)
+										.addComponent(rdbtn_notsold))
+									.addComponent(textField_email, Alignment.LEADING, GroupLayout.PREFERRED_SIZE, 154, GroupLayout.PREFERRED_SIZE)
+									.addComponent(textField_phone, Alignment.LEADING, GroupLayout.PREFERRED_SIZE, 154, GroupLayout.PREFERRED_SIZE)
+									.addComponent(textField_agentid, Alignment.LEADING, GroupLayout.PREFERRED_SIZE, 154, GroupLayout.PREFERRED_SIZE)
 									.addGroup(gl_contentPane.createSequentialGroup()
 										.addGroup(gl_contentPane.createParallelGroup(Alignment.LEADING)
-											.addComponent(textField_3, GroupLayout.PREFERRED_SIZE, 154, GroupLayout.PREFERRED_SIZE)
-											.addComponent(textField_4, GroupLayout.PREFERRED_SIZE, 154, GroupLayout.PREFERRED_SIZE))
+											.addComponent(textField_propertyid, GroupLayout.PREFERRED_SIZE, 154, GroupLayout.PREFERRED_SIZE)
+											.addComponent(textField_rating, GroupLayout.PREFERRED_SIZE, 154, GroupLayout.PREFERRED_SIZE))
 										.addPreferredGap(ComponentPlacement.RELATED, 184, Short.MAX_VALUE)
 										.addGroup(gl_contentPane.createParallelGroup(Alignment.LEADING)
 											.addComponent(btnModify, GroupLayout.PREFERRED_SIZE, 176, GroupLayout.PREFERRED_SIZE)
 											.addComponent(btnNewButton, GroupLayout.PREFERRED_SIZE, 176, GroupLayout.PREFERRED_SIZE)
 											.addGroup(gl_contentPane.createSequentialGroup()
-												.addComponent(btnNewButton_1)
+												.addComponent(btnInsert)
 												.addGap(18)
 												.addComponent(btnDelete)))))
 								.addGap(61))
@@ -161,15 +266,15 @@ public class AdminAgentUpdate extends JFrame {
 					.addGroup(gl_contentPane.createParallelGroup(Alignment.LEADING, false)
 						.addGroup(gl_contentPane.createSequentialGroup()
 							.addGap(39)
-							.addComponent(textField, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+							.addComponent(textField_agentid, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
 							.addGap(66)
-							.addComponent(textField_3, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+							.addComponent(textField_propertyid, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
 							.addGap(18)
 							.addGroup(gl_contentPane.createParallelGroup(Alignment.BASELINE)
-								.addComponent(rdbtnNewRadioButton)
-								.addComponent(rdbtnNewRadioButton_1))
+								.addComponent(rdbtn_sold)
+								.addComponent(rdbtn_notsold))
 							.addGap(50)
-							.addComponent(textField_1, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+							.addComponent(textField_phone, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
 							.addGap(9))
 						.addGroup(Alignment.TRAILING, gl_contentPane.createSequentialGroup()
 							.addPreferredGap(ComponentPlacement.RELATED, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -177,16 +282,16 @@ public class AdminAgentUpdate extends JFrame {
 							.addGap(119)))
 					.addGroup(gl_contentPane.createParallelGroup(Alignment.TRAILING, false)
 						.addGroup(gl_contentPane.createSequentialGroup()
-							.addComponent(textField_2, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+							.addComponent(textField_email, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
 							.addGap(41))
 						.addGroup(gl_contentPane.createSequentialGroup()
 							.addGroup(gl_contentPane.createParallelGroup(Alignment.BASELINE)
-								.addComponent(btnNewButton_1)
+								.addComponent(btnInsert)
 								.addComponent(btnDelete))
 							.addGap(63)))
 					.addGap(29)
 					.addGroup(gl_contentPane.createParallelGroup(Alignment.BASELINE)
-						.addComponent(textField_4, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+						.addComponent(textField_rating, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
 						.addComponent(btnModify))
 					.addPreferredGap(ComponentPlacement.RELATED, 31, Short.MAX_VALUE)
 					.addComponent(btnBack)
@@ -212,9 +317,9 @@ public class AdminAgentUpdate extends JFrame {
 		lblNewLabel_1_1_2.setHorizontalAlignment(SwingConstants.RIGHT);
 		lblNewLabel_1_1_2.setFont(new Font("Tahoma", Font.BOLD, 14));
 		
-		JLabel lblNewLabel_1_1_3 = new JLabel("Rating");
-		lblNewLabel_1_1_3.setHorizontalAlignment(SwingConstants.RIGHT);
-		lblNewLabel_1_1_3.setFont(new Font("Tahoma", Font.BOLD, 14));
+		JLabel lblNewLabel_1_1textField_propertyid = new JLabel("Rating");
+		lblNewLabel_1_1textField_propertyid.setHorizontalAlignment(SwingConstants.RIGHT);
+		lblNewLabel_1_1textField_propertyid.setFont(new Font("Tahoma", Font.BOLD, 14));
 		GroupLayout gl_panel = new GroupLayout(panel);
 		gl_panel.setHorizontalGroup(
 			gl_panel.createParallelGroup(Alignment.TRAILING)
@@ -226,7 +331,7 @@ public class AdminAgentUpdate extends JFrame {
 								.addComponent(lblNewLabel_1, GroupLayout.PREFERRED_SIZE, 111, GroupLayout.PREFERRED_SIZE)
 								.addComponent(lblNewLabel_1_1, GroupLayout.PREFERRED_SIZE, 111, GroupLayout.PREFERRED_SIZE)
 								.addComponent(lblNewLabel_1_1_1, GroupLayout.PREFERRED_SIZE, 111, GroupLayout.PREFERRED_SIZE)
-								.addComponent(lblNewLabel_1_1_3, GroupLayout.PREFERRED_SIZE, 111, GroupLayout.PREFERRED_SIZE))
+								.addComponent(lblNewLabel_1_1textField_propertyid, GroupLayout.PREFERRED_SIZE, 111, GroupLayout.PREFERRED_SIZE))
 							.addGap(35))
 						.addGroup(gl_panel.createSequentialGroup()
 							.addComponent(lblNewLabel_1_1_2, GroupLayout.PREFERRED_SIZE, 111, GroupLayout.PREFERRED_SIZE)
@@ -244,7 +349,7 @@ public class AdminAgentUpdate extends JFrame {
 					.addPreferredGap(ComponentPlacement.RELATED)
 					.addComponent(lblNewLabel_1_1_1, GroupLayout.PREFERRED_SIZE, 49, GroupLayout.PREFERRED_SIZE)
 					.addGap(40)
-					.addComponent(lblNewLabel_1_1_3, GroupLayout.PREFERRED_SIZE, 49, GroupLayout.PREFERRED_SIZE)
+					.addComponent(lblNewLabel_1_1textField_propertyid, GroupLayout.PREFERRED_SIZE, 49, GroupLayout.PREFERRED_SIZE)
 					.addContainerGap(34, Short.MAX_VALUE))
 		);
 		panel.setLayout(gl_panel);
