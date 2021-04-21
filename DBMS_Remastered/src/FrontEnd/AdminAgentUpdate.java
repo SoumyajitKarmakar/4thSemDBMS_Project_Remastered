@@ -216,7 +216,7 @@ public class AdminAgentUpdate extends JFrame {
                         update = new JDBCUpdate(query);
                         update.run();
                     }
-                    if (!textField_rating.getText().isEmpty()) {
+                    if (!textField_name.getText().isEmpty()) {
                         query = "delete from Agent where id = " + agentid;
                         update = new JDBCUpdate(query);
                         update.run();

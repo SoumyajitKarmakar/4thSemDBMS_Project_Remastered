@@ -42,6 +42,10 @@ public class AgOffView extends JFrame {
         });
     }
 
+    String getQuoted(String input) {
+        return "'" + input + "'";
+    }
+
     /**
      * Create the frame.
      */
@@ -61,19 +65,7 @@ public class AgOffView extends JFrame {
         lblNewLabel.setHorizontalAlignment(SwingConstants.CENTER);
 
         JTextArea textArea = new JTextArea();
-        textArea.setEditable(false);
-        textArea.setVisible(false);
-
-        JButton btnSubmit = new JButton("Submit");
-        btnSubmit.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                JDBCView view = new JDBCView("select * from Agent where id = " + textField.getText());
-                System.out.println("selected id is " + textField.getText());
-                String output = view.run();
-                textArea.setText(output);
-                textArea.setVisible(true);
-            }
-        });
+        textArea.setVisible(true);
 
         textField = new JTextField();
         textField.setColumns(10);
@@ -96,6 +88,32 @@ public class AgOffView extends JFrame {
         JRadioButton rdbtnNewRadioButton_1 = new JRadioButton("Rents Records");
         rdbtnNewRadioButton_1.setOpaque(false);
         buttonGroup.add(rdbtnNewRadioButton_1);
+
+        JButton btnSubmit = new JButton("Submit");
+        btnSubmit.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                textArea.setText(null);
+                int agentid = Integer.parseInt(textField.getText());
+                JDBCView view;
+                String output = "Please enter a valid agent id...\n";
+                if(rdbtnNewRadioButton.isSelected()){
+                    String query = "select * from Property where sold = 1 and id in ";
+                    query += "(select property from Agent_property where Agent_id = " + agentid + ")";
+                    view = new JDBCView(query);
+                    output = view.run();
+                }
+                else if(rdbtnNewRadioButton_1.isSelected()){
+                    String query = "select * from Property where sold = 1 and sale_rent = 'rent' and id in ";
+                    query += "(select property from Agent_property where Agent_id = " + agentid + ")";
+                    view = new JDBCView(query);
+                    output = view.run();
+                }
+                textArea.setText(output);
+                textArea.setVisible(true);
+                textArea.setEditable(false);
+                textField.setText(null);
+            }
+        });
 
         GroupLayout gl_contentPane = new GroupLayout(contentPane);
         gl_contentPane.setHorizontalGroup(gl_contentPane.createParallelGroup(Alignment.LEADING).addGroup(gl_contentPane
