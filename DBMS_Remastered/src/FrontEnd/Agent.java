@@ -69,11 +69,37 @@ public class Agent extends JFrame {
 
         JTextArea textArea = new JTextArea();
         textArea.setVisible(false);
+        
+        textField = new JTextField();
+        textField.setColumns(10);
+
+        passwordField = new JPasswordField();
+        passwordField.setVisible(false);
 
         JButton btnNewButton = new JButton("View");
         btnNewButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 textArea.setVisible(true);
+                String output = " ";
+                String query = "select * from agent where id = "+ Integer.parseInt(textField.getText());
+                
+                JDBCView view = new JDBCView(query);
+                output = view.run();
+                
+                query = "select email from agent_email where agent_id = "+ Integer.parseInt(textField.getText());
+                
+                JDBCView view_1 = new JDBCView(query);
+                output +="\n"+view_1.run();
+                
+                query = "select phone from agent_phone where agent_id = "+ Integer.parseInt(textField.getText());
+                
+                JDBCView view_2 = new JDBCView(query);
+                
+                query = "select property from agent_property where agent_id = "+ Integer.parseInt(textField.getText());
+                
+                JDBCView view_3 = new JDBCView(query);
+                output += "\n"+view_3.run();
+                textArea.setText(output);
             }
         });
 
@@ -87,10 +113,7 @@ public class Agent extends JFrame {
             }
         });
 
-        textField = new JTextField();
-        textField.setColumns(10);
-
-        passwordField = new JPasswordField();
+       
 
         JButton btnNewButton_1 = new JButton("Back");
         btnNewButton_1.addActionListener(new ActionListener() {
@@ -160,6 +183,7 @@ public class Agent extends JFrame {
         lblNewLabel_1.setFont(new Font("Tahoma", Font.BOLD, 14));
 
         JLabel lblNewLabel_1_1 = new JLabel("Password");
+        lblNewLabel_1_1.setVisible(false);
         lblNewLabel_1_1.setHorizontalAlignment(SwingConstants.RIGHT);
         lblNewLabel_1_1.setFont(new Font("Tahoma", Font.BOLD, 14));
         GroupLayout gl_panel = new GroupLayout(panel);
