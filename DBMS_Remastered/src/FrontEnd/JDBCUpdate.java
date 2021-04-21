@@ -12,9 +12,9 @@ class JDBCUpdate {
     JDBCUpdate(String updateQuery) {
         query = updateQuery;
         // your details here
-        username = "";
-        password = "";
-        database = "";
+        username = "root";
+        password = "mysql";
+        database = "project";
         conn = null;
     }
 

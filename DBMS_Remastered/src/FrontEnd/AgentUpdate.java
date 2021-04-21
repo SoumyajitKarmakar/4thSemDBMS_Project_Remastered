@@ -46,6 +46,9 @@ public class AgentUpdate extends JFrame {
             }
         });
     }
+    String getQuoted(String input) {
+        return "'" + input + "'";
+    }
 
     /**
      * Create the frame.
@@ -65,7 +68,7 @@ public class AgentUpdate extends JFrame {
         lblNewLabel.setFont(new Font("Tahoma", Font.BOLD, 24));
         lblNewLabel.setHorizontalAlignment(SwingConstants.CENTER);
 
-        JRadioButton rdbtnSold = new JRadioButton("On Sale");
+        JRadioButton rdbtnSold = new JRadioButton("Up for Rent");
         buttonGroup.add(rdbtnSold);
         buttonGroup.add(rdbtnSold);
         rdbtnSold.setOpaque(false);
@@ -75,14 +78,29 @@ public class AgentUpdate extends JFrame {
         buttonGroup.add(rdbtnForSale);
         rdbtnForSale.setOpaque(false);
 
+        JRadioButton rdbtnSoldrented = new JRadioButton("Sold/Rented");
+        rdbtnSoldrented.setOpaque(false);
+        
+        textField = new JTextField();
+        
         JButton btnSave = new JButton("Save");
         btnSave.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 int sold = 0;
-                if (rdbtnSold.isSelected()) {
+                String s = "";
+                String d = "";
+                String id = getQuoted(agentID.getText());;
+                if (rdbtnSoldrented.isSelected()) {
                     sold = 1;
                 }
-                String textCommand = "update Property set sold = " + sold + " where id=" + propertyID.getText();
+                if(rdbtnSold.isSelected()) {
+                	s = getQuoted("rent");
+                }
+                else if(rdbtnForSale.isSelected()) {
+                	s = getQuoted("sale");
+                }
+                d = textField.getText();
+                String textCommand = "update Property set sold = " + sold + ", sale_rent = " + s + ", sale_date = " + d + " where id=" + id;
                 JDBCUpdate command = new JDBCUpdate(textCommand);
                 command.run();
                 System.out.println("Update complete");
@@ -106,11 +124,9 @@ public class AgentUpdate extends JFrame {
             }
         });
 
-        JRadioButton rdbtnSoldrented = new JRadioButton("Sold/Rented");
-        buttonGroup.add(rdbtnSoldrented);
-        rdbtnSoldrented.setOpaque(false);
+        
 
-        textField = new JTextField();
+        
         textField.setColumns(10);
         GroupLayout gl_contentPane = new GroupLayout(contentPane);
         gl_contentPane.setHorizontalGroup(gl_contentPane.createParallelGroup(Alignment.LEADING).addGroup(gl_contentPane
