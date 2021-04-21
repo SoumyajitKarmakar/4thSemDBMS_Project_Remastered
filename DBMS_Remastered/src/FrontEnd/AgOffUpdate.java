@@ -27,6 +27,10 @@ public class AgOffUpdate extends JFrame {
     private JTextField email;
     private JTextField rating;
 
+    String getQuoted(String input) {
+        return "'" + input + "'";
+    }
+
     /**
      * Launch the application.
      */
@@ -95,23 +99,76 @@ public class AgOffUpdate extends JFrame {
         JButton insertButton = new JButton("Insert");
         insertButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                String textCommand = "insert into Agent(id, rating) values(" + agentID.getText() + ", "
-                        + rating.getText() + ")";
-                System.out.println(textCommand);
-                JDBCUpdate command = new JDBCUpdate(textCommand);
-                command.run();
-                System.out.println("Update complete");
+                String query = "";
+                JDBCUpdate update;
+                if(!agentID.getText().isEmpty()){
+                    int agentid = Integer.parseInt(agentID.getText());
+                    System.out.println(agentid);
+                    if(!rating.getText().isEmpty()){
+                        int rating_val = Math.max(0, Integer.parseInt(rating.getText()));
+                        System.out.println(rating_val);
+                        query = "insert into Agent(id, rating) values (" + agentid + "," + rating_val + ")";
+                        update = new JDBCUpdate(query);
+                        update.run();
+                    }
+                    if(!(phone.getText().isEmpty())){
+                        long phonenum = Long.parseLong(phone.getText());
+                        System.out.println(phonenum);
+                        query = "insert into Agent_phone values (" + agentid + "," + phonenum + ")";
+                        System.out.println(query);
+                        update = new JDBCUpdate(query);
+                        update.run();
+                    }
+                    if(!email.getText().isEmpty()){
+                        String mail = getQuoted(email.getText());
+                        System.out.println(mail);
+                        query = "insert into Agent_email values (" + agentid + "," + mail + ")";
+                        update = new JDBCUpdate(query);
+                        update.run();
+                    }
+                    email.setText(null);
+                    phone.setText(null);
+                    agentID.setText(null);
+                    rating.setText(null);
+                }
             }
         });
 
         JButton deleteButton = new JButton("Delete");
-        insertButton.addActionListener(new ActionListener() {
+        deleteButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                String textCommand = "delete from Agent where id=" + agentID.getText();
-                System.out.println(textCommand);
-                JDBCUpdate command = new JDBCUpdate(textCommand);
-                command.run();
-                System.out.println("Update complete");
+                if(!agentID.getText().isEmpty()){
+                    int agentid = Integer.parseInt(agentID.getText());
+                    JDBCUpdate update;
+                    String query;
+                    if(!(phone.getText().isEmpty())){
+                        long phonenum = Long.parseLong(phone.getText());
+                        query = "delete from Agent_phone where Agent_id = " + agentid + " and phone = " + phonenum;
+                        update = new JDBCUpdate(query);
+                        update.run();
+                    }
+                    if(!email.getText().isEmpty()){
+                        String mail = getQuoted(email.getText());
+                        query = "delete from Agent_email where Agent_id = " + agentid + " and email = " + mail;
+                        update = new JDBCUpdate(query);
+                        update.run();
+
+                    }
+                    if(!rating.getText().isEmpty()){
+                        int rating_val = Math.max(0, Integer.parseInt(rating.getText()));
+                        System.out.println(rating_val);
+                        query = "delete from Agent_property where Agent_id = " + agentid;
+                        update = new JDBCUpdate(query);
+                        update.run();
+                        query = "delete from Agent where id = " + agentid;
+                        update = new JDBCUpdate(query);
+                        update.run();
+                    }
+                    email.setText(null);
+                    phone.setText(null);
+                    agentID.setText(null);
+                    rating.setText(null);
+                }
             }
         });
 
